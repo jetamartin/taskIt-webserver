@@ -1,0 +1,26 @@
+{
+  "name": "taskit-webserver",
+  "version": "1.0.0",
+  "description": "NodeJS/Express Server for TaskIt webapp and TaskItMobile app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "10.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jetamartin/taskIt-webserver.git"
+  },
+  "author": "Jet Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jetamartin/taskIt-webserver/issues"
+  },
+  "homepage": "https://github.com/jetamartin/taskIt-webserver#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
