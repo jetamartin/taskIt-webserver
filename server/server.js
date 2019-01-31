@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
 
 app.set('port', process.env.PORT || 3000);
 
-app.post('/user', (req, res) => {
+app.post('/users', (req, res) => {
 	var user = new User({
 		email: req.body.email,
 		password: req.body.password
