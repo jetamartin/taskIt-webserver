@@ -1,27 +1,37 @@
+var express = require('express');
+// bodyParser - converts JSON body in http request into JS object 
+var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 
-// Core nodejs packages
-// const path = require('path');
-const http = require('http');
+var {mongoose} = require('./db/mongoose.js'); 
+var {User} = require('./models/user'); 
 
-// "Non-core" nodejs packages
-const express = require('express');
-
-// Create PORT variable for Heroku
-const port = process.env.PORT || 5000
 var app = express();
+app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.send("Hello from the root");
-})
+// create application/json parser
+//var jsonParser = bodyParser.json();
 
-app.post('/login', (req, res) => {
-  res.send("You are logged in");
-})
+// create application/x-www-form-urlencoded parser
+//var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-app.post('/register', (req, res) => {
-  res.send("You are registered");
-})
+const port = process.env.PORT || 3000;
+
+app.set('port', process.env.PORT || 3000);
+
+app.post('/user', (req, res) => {
+	var user = new User({
+		email: req.body.email,
+		password: req.body.password
+	})
+	
+	user.save().then((doc) => {
+		res.send(doc);
+	}, (e) => {
+		res.status(400).send(e);
+	});
+});
 
 app.listen(port, () => {
-  console.log(`Server is up on port ${port}`);
+  console.log(`Server is up on port ${port}`)
 });
