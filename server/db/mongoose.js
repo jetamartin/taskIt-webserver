@@ -1,4 +1,4 @@
-// Mogoose Configuration file
+// Mongoose Configuration file
 
 var mongoose = require('mongoose'); 
 
@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Connect to local DB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taksIt', { useNewUrlParser: true }); 
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskIt', { useNewUrlParser: true }); 
 
 // Export to other 
 module.exports = {mongoose};
