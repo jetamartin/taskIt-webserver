@@ -9,7 +9,8 @@ mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 
 // Connect to local DB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskIt', { useNewUrlParser: true }); 
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+//								 , { useNewUrlParser: true }); 
 
 // Export to other 
 module.exports = {mongoose};

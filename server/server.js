@@ -1,7 +1,9 @@
-var express = require('express');
-var _ = require('lodash');
+require('./config/config');
+
+const express = require('express');
+const _ = require('lodash');
 // bodyParser - converts JSON body in http request into JS object 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 var {mongoose} = require('./db/mongoose.js'); 
 var {User} = require('./models/user'); 
