@@ -75,6 +75,18 @@ UserSchema.methods.generateAuthToken = function ( ) {
 	});
 };
 
+// Instance method
+UserSchema.methods.removeToken = function (token) {
+	var user = this;
+	return user.updateOne({
+		// $pull is a mongodb operator that removes items from an array that matches certain criteria 
+		$pull: {  
+			tokens: {token}
+		}
+	})
+};
+
+
 // Model method 
 UserSchema.statics.findByToken = function (token) {
 	// 'this' returns the associated model
@@ -94,6 +106,37 @@ UserSchema.statics.findByToken = function (token) {
 	})
 	
 };
+
+/* Model Method:
+	 First check to see if there is a user with the matching email address in the signin request 
+	 If so then check to see if the password provided in the signin request matches the 
+	 encrypted and salted password in the DB for that user. If there is a match
+	 then return the user otherwise reject the promise so that the calling method 
+	 can handle things in a catch (e.g., send back a 400 response)
+*/
+
+UserSchema.statics.findByCredentials = function (email, password) {
+	var User = this;
+	return User.findOne({email}).then((user) => {
+		// If no matching document found with the email then no need to compare password
+		if (!user) {
+			return Promise.reject();
+		}
+	
+		/* If the users password matches the one encrypted & salted on file then return the user otherwise
+			 simply reject the promise and this will be handled by the calling method.
+		*/
+		return bcrypt.compare(password, user.password).then((res) => {
+			if (!res) {
+				return Promise.reject();
+			} else {
+				return user;
+			}
+		});
+	});
+};
+
+
 // Mongoose Middleware
 UserSchema.pre('save', function(next) {
 	var user = this;

@@ -18,7 +18,7 @@ app.set('port', process.env.PORT || 3000);
 // Sign-in
 //**************************************
 
-app.post('/users', (req, res) => {
+app.post('/users/signup', (req, res) => {
 	// Use lodash .pick method to ensure we only get the params we need (and avoid any that may have been added maliciously)
 	var body = _.pick(req.body, ['email', 'password' ])
 	// Note because of prior line we can just pass in body because it has object w/email & password
@@ -26,7 +26,7 @@ app.post('/users', (req, res) => {
 	//Save user record in Db including token[]
 	user.save().then(() => {
 		// Create token & add to User record
-		return user.generateAuthToken();
+		return user.generateAuthToken()
 	}).then((token) => {
 		// Send token back in header
 		// x-auth used to create custom header
@@ -36,6 +36,26 @@ app.post('/users', (req, res) => {
 	})
 });
 
+app.post('/users/signin', (req, res) => {
+	// Use lodash .pick method to ensure we only get the params we need (and avoid any that may have been added maliciously)
+	var body = _.pick(req.body, ['email', 'password' ]);
+	
+	User.findByCredentials(body.email, body.password).then((user) => {
+		return user.generateAuthToken().then((token) => {
+					res.header('x-auth', token).send(user)
+		});
+	}).catch((e) => {
+		res.status(400).send(e); 
+	})
+})
+
+app.delete('/users/signout', authenticate, (req, res) => {
+	req.user.removeToken(req.token).then(() => {
+		res.status(200).send();
+	}, () => {
+		res.status(400).send();
+	})
+});
 
 
 //**************************************
