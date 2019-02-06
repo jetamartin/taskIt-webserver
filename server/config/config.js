@@ -1,8 +1,10 @@
 const env = process.env.NODE_ENV || 'development';
-if (env === 'development') {
-	process.env.PORT = 3000;
-	process.env.MONGODB_URI = 'mongodb://localhost:27017/taskIt';
-} else if (env === 'test') {
-	process.env.PORT = 3000;
-	process.env.MONGODB_URI = 'mongodb://localhost:27017/taskItTest';
+
+if (env === 'development' || env === 'test') {
+	var config = require('./config.json');
+	var envConfig = config[env];
+	// Object.keys() returns all keys of object in an array
+	Object.keys(envConfig).forEach((key) => {
+		process.env[key] = envConfig[key]; 
+	})
 }
